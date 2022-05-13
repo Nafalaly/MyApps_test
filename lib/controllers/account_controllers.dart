@@ -19,7 +19,7 @@ class AccountController extends GetxController {
     }
     switch (result.getStatusCode) {
       case 200:
-        Get.off(() => const Dashboard());
+        Get.off(() => Dashboard());
         break;
       case 501:
         showDefaultConnectionProblem();

@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       initialRoute: '/LoginScreen',
       routes: {
-        '/HalamanUtama': (context) => const Dashboard(),
+        '/HalamanUtama': (context) => Dashboard(),
         '/LoginScreen': (context) => LoginPage(),
       },
       theme: ThemeData(
