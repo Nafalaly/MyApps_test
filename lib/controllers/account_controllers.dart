@@ -6,12 +6,20 @@ class AccountController extends GetxController {
   //get current logged account
   Account getCurrentAccount() => _currentAccount;
 
-  Future<int> loginToAccount({
+  Future<void> loginToAccount({
     required String email,
     required String password,
   }) async {
     APIUser api = APIUser();
-    return await api.loginUser(email: email, pass: password);
+    ResponseParser result = await api.loginUser(email: email, pass: password);
+    switch (result.getStatusCode) {
+      case 200:
+        Get.off(() => const Dashboard());
+        break;
+      default:
+        showInternalErrorPopUp(message: result.getMessage!);
+        break;
+    }
   }
 
   void setCurrentAccount({required Account newAccount}) {

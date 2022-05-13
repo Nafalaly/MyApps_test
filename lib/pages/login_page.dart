@@ -172,9 +172,6 @@ class LoginPage extends StatelessWidget {
   Future<void> loginToAccount() async {
     try {
       toggleLoadingAnimation.value = true;
-      if (!await hasNetwork()) {
-        throw const SocketException('No Connection Available on your devices');
-      }
       if (emailController.text == '') {
         showWarning('Email cannot be empty');
         return;
@@ -187,34 +184,11 @@ class LoginPage extends StatelessWidget {
       if (passwordController.text == '') {
         showWarning('Password cannot be empty');
         return;
-      } else {
-        if (passwordController.text.length <= 5) {
-          showWarning('Password must be 5 characters long');
-          return;
-        }
       }
-      switch (await accountController.loginToAccount(
-          email: emailController.text, password: passwordController.text)) {
-        case 200:
-          Get.off(() => const Dashboard());
-          break;
-        default:
-          showDefaultErrorPopUp();
-          break;
-      }
-    } on SocketException {
-      showDefaultConnectionProblem();
+      await accountController.loginToAccount(
+          email: emailController.text, password: passwordController.text);
     } finally {
       toggleLoadingAnimation.value = false;
-    }
-  }
-
-  Future<bool> hasNetwork() async {
-    try {
-      final result = await InternetAddress.lookup('example.com');
-      return result.isNotEmpty && result[0].rawAddress.isNotEmpty;
-    } on SocketException catch (_) {
-      return false;
     }
   }
 

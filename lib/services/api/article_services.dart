@@ -1,10 +1,11 @@
 part of '../services.dart';
 
 class APIArticle {
-  dioPackage.Dio dio = dioPackage.Dio();
+  dio_package.Dio dio = dio_package.Dio();
   Future<int> fetchArticles() async {
     final AccountController accountController = Get.find();
     final ArticleController articleController = Get.find();
+    ResponseParser parser = ResponseParser();
     try {
       Map<String, dynamic> header = {
         'Accept': 'application/json',
@@ -20,8 +21,8 @@ class APIArticle {
       };
       final responseku = await dio.get(BaseUrl.fetchArticles,
           queryParameters: formdata,
-          options: dioPackage.Options(headers: header));
-      ResponseParser parser = ResponseParser.parse(mapData: responseku.data);
+          options: dio_package.Options(headers: header));
+      parser = ResponseParser.success(mapData: responseku.data);
       if (parser.getStatus == ResponseStatus.success) {
         List<Article> newContent = [];
         for (int i = 0; i < parser.getData!['articles'].length; i++) {

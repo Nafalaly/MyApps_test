@@ -34,6 +34,17 @@ void showDefaultErrorPopUp() {
   }
 }
 
+void showInternalErrorPopUp({required String message}) {
+  if (!Get.isSnackbarOpen) {
+    Get.snackbar('Cannot proceed your request', message,
+        icon: const Icon(Icons.warning, color: Colors.white),
+        backgroundColor: Colors.deepOrange,
+        snackPosition: SnackPosition.TOP,
+        snackStyle: SnackStyle.GROUNDED,
+        colorText: Colors.white);
+  }
+}
+
 void showDefaultConnectionProblem() {
   if (!Get.isSnackbarOpen) {
     Get.snackbar('Cannot communicate with server',
