@@ -4,12 +4,7 @@ class ResponseParser {
   late _Meta _meta = _Meta.init();
   dynamic _data;
   ResponseParser() {
-    Map init = {
-      'status': false,
-      'code': 0,
-      'message': 'Bad Request',
-    };
-    _meta = _Meta.createMeta(mapData: init);
+    _meta = _Meta.init();
   }
   ResponseParser.success({required dynamic mapData}) {
     _meta = _Meta.createMeta(mapData: mapData);
@@ -35,19 +30,21 @@ class _Meta {
   late ResponseStatus status;
   late String? message;
   _Meta.init() {
-    message = 'Initialization';
-    status = ResponseStatus.initialized;
-    responseCode = 0;
+    message = 'Not implemented';
+    status = ResponseStatus.notImplemented;
+    responseCode = 501;
   }
   _Meta.createMeta({required dynamic mapData}) {
     responseCode = mapData['code'];
     message = mapData['message'].toString();
-    if (mapData['status'] == true) {
+    if (mapData['code'] == 200) {
       status = ResponseStatus.success;
+    } else if (mapData['code'] == 501) {
+      status = ResponseStatus.notImplemented;
     } else {
       status = ResponseStatus.error;
     }
   }
 }
 
-enum ResponseStatus { error, success, initialized, internalError }
+enum ResponseStatus { error, success, notImplemented }

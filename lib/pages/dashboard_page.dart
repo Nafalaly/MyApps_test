@@ -46,7 +46,8 @@ class _HalamanUtamaState extends State<Dashboard> {
   }
 
   Future<int> fetchArticles() async {
-    return await _articleController.fetchArticles();
+    await _articleController.fetchArticles();
+    return 0;
   }
 
   Widget verticalWidget({required AsyncSnapshot snapshot}) {

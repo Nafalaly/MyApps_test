@@ -2,9 +2,8 @@ part of '../services.dart';
 
 class APIArticle {
   dio_package.Dio dio = dio_package.Dio();
-  Future<int> fetchArticles() async {
+  Future<ResponseParser> fetchArticles() async {
     final AccountController accountController = Get.find();
-    final ArticleController articleController = Get.find();
     ResponseParser parser = ResponseParser();
     try {
       Map<String, dynamic> header = {
@@ -23,19 +22,26 @@ class APIArticle {
           queryParameters: formdata,
           options: dio_package.Options(headers: header));
       parser = ResponseParser.success(mapData: responseku.data);
-      if (parser.getStatus == ResponseStatus.success) {
-        List<Article> newContent = [];
-        for (int i = 0; i < parser.getData!['articles'].length; i++) {
-          newContent
-              .add(Article.fromJson(jsonData: parser.getData!['articles'][i]));
-        }
-        articleController.setContents(newContent: newContent);
-        return parser.getStatusCode!;
-      } else {
-        return parser.getStatusCode!;
+      return parser;
+    } on dio_package.DioError catch (e) {
+      Map errorMessages = e.response!.data['errors'];
+      String displayMessages = '';
+      for (var element in errorMessages.values) {
+        displayMessages = displayMessages + ' $element';
       }
-    } on Exception {
-      return 400;
+      Map response = {
+        'code': e.response!.statusCode,
+        'message': displayMessages,
+      };
+      parser = ResponseParser.error(mapData: response);
+      return parser;
+    } on SocketException {
+      Map response = {
+        'code': 501,
+        'message': 'Please make sure you have an active internet connection',
+      };
+      parser = ResponseParser.error(mapData: response);
+      return parser;
     }
   }
 }

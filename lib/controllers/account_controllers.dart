@@ -12,9 +12,17 @@ class AccountController extends GetxController {
   }) async {
     APIUser api = APIUser();
     ResponseParser result = await api.loginUser(email: email, pass: password);
+    if (result.getStatus == ResponseStatus.success) {
+      setCurrentAccount(
+          newAccount:
+              Account.fromJson(jsonData: result.getData!, password: password));
+    }
     switch (result.getStatusCode) {
       case 200:
         Get.off(() => const Dashboard());
+        break;
+      case 501:
+        showDefaultConnectionProblem();
         break;
       default:
         showInternalErrorPopUp(message: result.getMessage!);
