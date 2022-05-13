@@ -33,20 +33,13 @@ class APIUser {
       final responseku = await dio.post(BaseUrl.login,
           data: formdata, options: dio_package.Options(headers: header));
       parser = ResponseParser.success(mapData: responseku.data);
-      if (parser.getStatus == ResponseStatus.success) {
-        accountController.setCurrentAccount(
-            newAccount:
-                Account.fromJson(jsonData: parser.getData!, password: pass));
-        return parser;
-      } else {
-        return parser;
-      }
+      return parser;
     } on dio_package.DioError catch (e) {
       Map errorMessages = e.response!.data['errors'];
       String displayMessages = '';
-      errorMessages.values.forEach((element) {
+      for (var element in errorMessages.values) {
         displayMessages = displayMessages + ' $element';
-      });
+      }
       Map response = {
         'code': e.response!.statusCode,
         'message': displayMessages,
