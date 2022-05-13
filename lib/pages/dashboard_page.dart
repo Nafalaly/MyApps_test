@@ -1,13 +1,7 @@
 part of 'pages.dart';
 
-class Dashboard extends StatefulWidget {
-  const Dashboard({Key? key}) : super(key: key);
-
-  @override
-  State<Dashboard> createState() => _HalamanUtamaState();
-}
-
-class _HalamanUtamaState extends State<Dashboard> {
+class Dashboard extends StatelessWidget {
+  Dashboard({Key? key}) : super(key: key);
   final double welcomeHeight = 50;
   final double horizontalCompHeight = 175;
   final double verticalCompHeight = DeviceScreen.devHeight - 20;
