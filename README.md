@@ -1,6 +1,6 @@
 # elisoft_test
 
-A new Flutter project.
+Contoh Screenshot aplikasi ditambahkan pada folder Screenshot
 
 ## Getting Started
 
