@@ -1,18 +1,7 @@
 part of '../services.dart';
 
 class APIUser {
-  AccountController accountController = Get.find();
   dio_package.Dio dio = dio_package.Dio();
-
-  Future<bool> hasNetwork() async {
-    try {
-      final result = await InternetAddress.lookup('example.com');
-      return result.isNotEmpty && result[0].rawAddress.isNotEmpty;
-    } on SocketException catch (_) {
-      return false;
-    }
-  }
-
   Future<ResponseParser> loginUser({
     required String email,
     required String pass,
@@ -47,7 +36,11 @@ class APIUser {
       parser = ResponseParser.error(mapData: response);
       return parser;
     } on SocketException {
-      showDefaultConnectionProblem();
+      Map response = {
+        'code': 501,
+        'message': 'Please make sure you have an active internet connection',
+      };
+      parser = ResponseParser.error(mapData: response);
       return parser;
     }
   }

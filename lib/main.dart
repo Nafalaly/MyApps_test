@@ -1,7 +1,6 @@
-import 'package:elisoft_test/pages/pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/route_manager.dart';
+import 'pages/pages.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,14 +15,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    return MaterialApp(
       initialRoute: '/LoginScreen',
       routes: {
-        '/HalamanUtama': (context) => const Dashboard(),
         '/LoginScreen': (context) => LoginPage(),
       },
+      title: 'Elisoft Test',
       theme: ThemeData(
-        primarySwatch: Colors.yellow,
+        primarySwatch: Colors.blue,
       ),
       builder: (context, child) {
         final mediaQueryData = MediaQuery.of(context);
@@ -33,7 +32,6 @@ class MyApp extends StatelessWidget {
           data: MediaQuery.of(context).copyWith(textScaleFactor: scale),
         );
       },
-      title: 'Test Elisoft',
     );
   }
 }
