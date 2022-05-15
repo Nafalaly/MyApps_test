@@ -1,12 +1,28 @@
 part of '../../pages.dart';
 
 class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
-  DashboardBloc({required this.account}) : super(DashboardState()) {
+  DashboardBloc({
+    required this.account,
+    required this.connectivityCubit,
+  }) : super(DashboardState(account: account)) {
     apiArticle = APIArticle.setAccountAttached(account: account);
+    monitorChanges();
     on(mapEvent);
   }
   final Account account;
   APIArticle apiArticle = APIArticle();
+  ConnectivityCubit connectivityCubit;
+  late StreamSubscription onListenConnectivity;
+
+  void monitorChanges() {
+    onListenConnectivity = connectivityCubit.stream.listen((connectivity) {
+      if (connectivity is InternetConnected) {
+        emit(state.copyWith(connectivity: InternetConnected()));
+      } else {
+        emit(state.copyWith(connectivity: NoInternetConnections()));
+      }
+    });
+  }
 
   Future<void> mapEvent(
       DashboardEvent event, Emitter<DashboardState> emit) async {
@@ -31,5 +47,10 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
           break;
       }
     }
+  }
+
+  @override
+  Future<void> close() {
+    return super.close();
   }
 }
