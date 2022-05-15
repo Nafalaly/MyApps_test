@@ -1,22 +1,24 @@
 part of '../services.dart';
 
 class APIArticle {
+  APIArticle();
+  APIArticle.setAccountAttached({required this.account});
+  late Account account;
   dio_package.Dio dio = dio_package.Dio();
   Future<ResponseParser> fetchArticles() async {
-    final AccountController accountController = Get.find();
     ResponseParser parser = ResponseParser();
     try {
+      if (!await hasNetwork()) {
+        throw const SocketException('No Connection Available on your devices');
+      }
       Map<String, dynamic> header = {
         'Accept': 'application/json',
         'Authorization': 'Bearer lsGPLl4k6Vc4J0VhnFaMBqetNtn1ofsB',
       };
       Map<String, dynamic> formdata = {
-        "userName": accountController
-            .getCurrentAccount()
-            .email, //no username defined inside example response so i choose email instead
-        "password": accountController.getCurrentAccount().password,
-        "usernameOrEmail":
-            accountController.getCurrentAccount().email, //or email ?
+        "userName": account.email,
+        "password": account.password,
+        "usernameOrEmail": account.email,
       };
       final responseku = await dio.get(BaseUrl.fetchArticles,
           queryParameters: formdata,

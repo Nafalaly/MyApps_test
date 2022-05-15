@@ -19,40 +19,36 @@ TextStyle headerFontStyle = GoogleFonts.poppins()
 
 const double defaultMargin = 24;
 
-String dateFormat(DateTime time) {
-  return '${DateFormat.d('en_US').format(time)} ${DateFormat.MMMM('en_US').format(time)} ${DateFormat.y('en_US').format(time)} ${DateFormat.Hms('en_US').format(time)}';
-}
+// void showDefaultErrorPopUp() {
+//   if (!Get.isSnackbarOpen) {
+//     Get.snackbar('Something went wrong', 'Please try again later',
+//         icon: const Icon(Icons.warning, color: Colors.white),
+//         backgroundColor: Colors.black,
+//         snackPosition: SnackPosition.TOP,
+//         snackStyle: SnackStyle.GROUNDED,
+//         colorText: Colors.white);
+//   }
+// }
 
-void showDefaultErrorPopUp() {
-  if (!Get.isSnackbarOpen) {
-    Get.snackbar('Something went wrong', 'Please try again later',
-        icon: const Icon(Icons.warning, color: Colors.white),
-        backgroundColor: Colors.black,
-        snackPosition: SnackPosition.TOP,
-        snackStyle: SnackStyle.GROUNDED,
-        colorText: Colors.white);
-  }
-}
+// void showInternalErrorPopUp({required String message}) {
+//   if (!Get.isSnackbarOpen) {
+//     Get.snackbar('Cannot proceed your request', message,
+//         icon: const Icon(Icons.warning, color: Colors.white),
+//         backgroundColor: Colors.deepOrange,
+//         snackPosition: SnackPosition.TOP,
+//         snackStyle: SnackStyle.GROUNDED,
+//         colorText: Colors.white);
+//   }
+// }
 
-void showInternalErrorPopUp({required String message}) {
-  if (!Get.isSnackbarOpen) {
-    Get.snackbar('Cannot proceed your request', message,
-        icon: const Icon(Icons.warning, color: Colors.white),
-        backgroundColor: Colors.deepOrange,
-        snackPosition: SnackPosition.TOP,
-        snackStyle: SnackStyle.GROUNDED,
-        colorText: Colors.white);
-  }
-}
-
-void showDefaultConnectionProblem() {
-  if (!Get.isSnackbarOpen) {
-    Get.snackbar('Cannot communicate with server',
-        'Please make sure you have an active connection',
-        icon: const Icon(Icons.wifi_off_rounded, color: Colors.white),
-        backgroundColor: Colors.red,
-        snackPosition: SnackPosition.TOP,
-        snackStyle: SnackStyle.GROUNDED,
-        colorText: Colors.white);
-  }
-}
+// void showDefaultConnectionProblem() {
+//   if (!Get.isSnackbarOpen) {
+//     Get.snackbar('Cannot communicate with server',
+//         'Please make sure you have an active connection',
+//         icon: const Icon(Icons.wifi_off_rounded, color: Colors.white),
+//         backgroundColor: Colors.red,
+//         snackPosition: SnackPosition.TOP,
+//         snackStyle: SnackStyle.GROUNDED,
+//         colorText: Colors.white);
+//   }
+// }

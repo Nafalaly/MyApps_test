@@ -8,3 +8,7 @@ Future<bool> hasNetwork() async {
     return false;
   }
 }
+
+String dateFormat(DateTime time) {
+  return '${DateFormat.d('en_US').format(time)} ${DateFormat.MMMM('en_US').format(time)} ${DateFormat.y('en_US').format(time)} ${DateFormat.Hms('en_US').format(time)}';
+}

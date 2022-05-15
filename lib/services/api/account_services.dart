@@ -1,9 +1,7 @@
 part of '../services.dart';
 
 class APIUser {
-  AccountController accountController = Get.find();
   dio_package.Dio dio = dio_package.Dio();
-
   Future<ResponseParser> loginUser({
     required String email,
     required String pass,
