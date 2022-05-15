@@ -15,7 +15,23 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     } else if (event is PasswordSetVisible) {
       emit(state.copyWith(passVisible: event.visibleStatus));
     } else if (event is LoginSubmitted) {
-      _loginHandler(event, emit);
+      emit(state.copyWith(formStatus: const FormSubmitting()));
+      if (!_validator(event, emit)) {
+        return;
+      }
+      ResponseParser result =
+          await apiLogin.loginUser(email: state.username, pass: state.password);
+      switch (result.getStatusCode) {
+        case 200:
+          emit(state.copyWith(
+              formStatus: SubmissionSuccess(
+                  account: Account.fromJson(jsonData: result.getData!))));
+          break;
+        default:
+          emit(state.copyWith(
+              formStatus: SubmissionFailure(failMessage: result.getMessage!)));
+          break;
+      }
     } else if (event is NavigateToDashBoard) {
       emit(state.copyWith(formStatus: const InitialFormStatus()));
     } else if (event is LoginDismissible) {
@@ -44,25 +60,5 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       return false;
     }
     return true;
-  }
-
-  void _loginHandler(LoginEvent event, Emitter<LoginState> emit) async {
-    emit(state.copyWith(formStatus: const FormSubmitting()));
-    if (!_validator(event, emit)) {
-      return;
-    }
-    ResponseParser result =
-        await apiLogin.loginUser(email: state.username, pass: state.password);
-    switch (result.getStatusCode) {
-      case 200:
-        emit(state.copyWith(
-            formStatus: SubmissionSuccess(
-                account: Account.fromJson(jsonData: result.getData!))));
-        break;
-      default:
-        emit(state.copyWith(
-            formStatus: SubmissionFailure(failMessage: result.getMessage!)));
-        break;
-    }
   }
 }
