@@ -2,25 +2,32 @@ part of '../../pages.dart';
 
 class DashboardState {
   List<Article> articles;
-  late Account account;
+  late AccountBloc account;
+  late ConnectivityState isHaveConnection;
   ContentStatus articleContentStatus;
+
+  bool isConnectedToServer() => isHaveConnection is InternetConnected;
 
   bool articleIsEmpty() => articles.isEmpty;
 
   DashboardState(
       {this.articles = const [],
-      Account? account,
+      AccountBloc? account,
+      ConnectivityState? connection,
       this.articleContentStatus = const InitialStatus()}) {
-    this.account = account ?? Account.init();
+    if (account != null) {
+      this.account = account;
+    }
+    isHaveConnection = connection ?? InternetInitial();
   }
 
   DashboardState copyWith(
       {List<Article>? articles,
-      Account? account,
+      ConnectivityState? connectivity,
       ContentStatus? contentStatus}) {
     return DashboardState(
         articles: articles ?? this.articles,
-        account: account ?? this.account,
+        connection: connectivity ?? isHaveConnection,
         articleContentStatus: contentStatus ?? articleContentStatus);
   }
 }
