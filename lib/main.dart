@@ -1,5 +1,5 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:elisoft_test/main_controller/cubit/connectivity_cubit.dart';
+import 'package:elisoft_test/main_controller/main_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,13 +22,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => LoginBloc()),
         BlocProvider(
             create: (context) =>
                 ConnectivityCubit(internetAdaptor: connection)),
+        BlocProvider(create: (context) => AccountBloc()),
         BlocProvider(
-            create: (context) => DashboardBloc(
-                connectivityCubit: context.read<ConnectivityCubit>())),
+            create: (context) =>
+                LoginBloc(accountController: context.read<AccountBloc>())),
       ],
       child: MaterialApp(
         initialRoute: '/LoginScreen',

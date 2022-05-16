@@ -2,17 +2,23 @@ part of '../../pages.dart';
 
 class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   DashboardBloc({
-    required this.account,
+    required this.accountBloc,
     required this.connectivityCubit,
-  }) : super(DashboardState(account: account)) {
-    apiArticle = APIArticle.setAccountAttached(account: account);
+  }) : super(DashboardState(account: accountBloc)) {
+    apiInitialization();
     monitorChanges();
     on(mapEvent);
   }
-  final Account account;
+  final AccountBloc accountBloc;
   APIArticle apiArticle = APIArticle();
   ConnectivityCubit connectivityCubit;
   late StreamSubscription onListenConnectivity;
+
+  void apiInitialization() {
+    AccountAttached currentState = accountBloc.state as AccountAttached;
+    Account data = currentState.account;
+    apiArticle = APIArticle.setAccountAttached(account: data);
+  }
 
   void monitorChanges() {
     onListenConnectivity = connectivityCubit.stream.listen((connectivity) {
@@ -51,6 +57,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
 
   @override
   Future<void> close() {
+    onListenConnectivity.cancel();
     return super.close();
   }
 }

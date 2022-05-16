@@ -18,8 +18,10 @@ class Dashboard extends StatelessWidget {
           height: DeviceScreen.devHeight,
           width: DeviceScreen.devWidth,
           child: BlocProvider(
-            create: (context) =>
-                DashboardBloc(account: account)..add(DashboardContentReload()),
+            create: (context) => DashboardBloc(
+                accountBloc: context.read<AccountBloc>(),
+                connectivityCubit: context.read<ConnectivityCubit>())
+              ..add(DashboardContentReload()),
             child: BlocListener<DashboardBloc, DashboardState>(
               listener: (context, state) {},
               child: Column(
@@ -46,8 +48,10 @@ class Dashboard extends StatelessWidget {
     return BlocBuilder<DashboardBloc, DashboardState>(
       builder: (context, state) {
         return Container(
-          height: verticalCompHeight -
-              (welcomeHeight * 2 + horizontalCompHeight + 15 + 10),
+          height: state.isConnectedToServer()
+              ? verticalCompHeight - (welcomeHeight + horizontalCompHeight + 15)
+              : verticalCompHeight -
+                  (welcomeHeight * 2 + horizontalCompHeight + 15 + 10),
           width: DeviceScreen.devWidth,
           margin: const EdgeInsets.only(top: 15),
           child: NotificationListener<OverscrollIndicatorNotification>(
@@ -103,24 +107,28 @@ class Dashboard extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              height: welcomeHeight - 10,
-              width: DeviceScreen.devWidth,
-              child: Row(
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: Icon(Icons.wifi_off_sharp, color: Colors.white),
+            state.isConnectedToServer()
+                ? const SizedBox()
+                : Container(
+                    height: welcomeHeight - 10,
+                    width: DeviceScreen.devWidth,
+                    child: Row(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          child:
+                              Icon(Icons.wifi_off_sharp, color: Colors.white),
+                        ),
+                        Text('No internet connection available',
+                            style:
+                                blackFontStyle2.copyWith(color: Colors.white))
+                      ],
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Colors.black87,
+                    ),
                   ),
-                  Text('No internet connection available',
-                      style: blackFontStyle2.copyWith(color: Colors.white))
-                ],
-              ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                color: Colors.black87,
-              ),
-            ),
             Container(
               height: welcomeHeight - 10,
               margin: const EdgeInsets.symmetric(vertical: 5),

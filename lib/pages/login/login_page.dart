@@ -16,30 +16,27 @@ class LoginPage extends StatelessWidget {
     return SafeArea(
         child: Scaffold(
       backgroundColor: Colors.white,
-      body: BlocProvider(
-        create: (context) => LoginBloc(),
-        child: Container(
-          height: DeviceScreen.devHeight,
-          width: DeviceScreen.devWidth,
-          padding: const EdgeInsets.symmetric(
-              horizontal: defaultMargin, vertical: 10),
-          alignment: Alignment.center,
-          child: GestureDetector(
-            onTap: () {
-              FocusManager.instance.primaryFocus?.unfocus();
+      body: Container(
+        height: DeviceScreen.devHeight,
+        width: DeviceScreen.devWidth,
+        padding:
+            const EdgeInsets.symmetric(horizontal: defaultMargin, vertical: 10),
+        alignment: Alignment.center,
+        child: GestureDetector(
+          onTap: () {
+            FocusManager.instance.primaryFocus?.unfocus();
+          },
+          child: NotificationListener<OverscrollIndicatorNotification>(
+            onNotification: (overscroll) {
+              overscroll.disallowIndicator();
+              return false;
             },
-            child: NotificationListener<OverscrollIndicatorNotification>(
-              onNotification: (overscroll) {
-                overscroll.disallowIndicator();
-                return false;
-              },
-              child: ListView(
-                shrinkWrap: true,
-                children: [
-                  _upperComponent(),
-                  _lowerComponent(),
-                ],
-              ),
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                _upperComponent(),
+                _lowerComponent(),
+              ],
             ),
           ),
         ),

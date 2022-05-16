@@ -1,14 +1,8 @@
-import 'dart:async';
-
-import 'package:bloc/bloc.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:meta/meta.dart';
-
-part 'connectivity_state.dart';
+part of '../main_controller.dart';
 
 class ConnectivityCubit extends Cubit<ConnectivityState> {
   ConnectivityCubit({required this.internetAdaptor})
-      : super(InternetLoading()) {
+      : super(InternetInitial()) {
     connectivityStream = internetAdaptor.onConnectivityChanged.listen((event) {
       if (event == ConnectivityResult.wifi ||
           event == ConnectivityResult.mobile) {

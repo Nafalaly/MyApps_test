@@ -1,11 +1,12 @@
 part of '../../pages.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  LoginBloc() : super(LoginState()) {
+  LoginBloc({required this.accountController}) : super(LoginState()) {
     on(mapEvent);
   }
 
   final APIUser apiLogin = APIUser();
+  final AccountBloc accountController;
 
   Future<void> mapEvent(LoginEvent event, Emitter<LoginState> emit) async {
     if (event is LoginUsernameChanged) {
@@ -23,9 +24,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           await apiLogin.loginUser(email: state.username, pass: state.password);
       switch (result.getStatusCode) {
         case 200:
-          emit(state.copyWith(
-              formStatus: SubmissionSuccess(
-                  account: Account.fromJson(jsonData: result.getData!))));
+          Account account = Account.fromJson(jsonData: result.getData!);
+          accountController.add(AccountLogIn(newAccount: account));
+          emit(state.copyWith(formStatus: SubmissionSuccess(account: account)));
+
           break;
         default:
           emit(state.copyWith(
